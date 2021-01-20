@@ -1,7 +1,7 @@
 class Bullet{
-    constructor(x, y, target, color,  damage){
-        this.x = x;
-        this.y = y;
+    constructor(source, target, color,  damage){
+        this.x = source.x;
+        this.y = source.y;
         this.size = 5;
         this.id = getRandomId();
 
@@ -19,11 +19,13 @@ class Bullet{
 
             if(target.died || distance_(this.x, this.y, this.destX, this.destY) < this.speed){
                 pushDamageEffect(target.x, target.y, this.damage);
+                source.addDmgCount(this.damage);
 
                 // destroy
                 if(target.getDamage(this.damage)){
                     target.willDestroy();
                     gold.add(target.gold);
+                    source.getExp(target.exp);
                     delete enemyMap[target.id];
                 }
                 this.willDestroy();
@@ -48,9 +50,9 @@ class Bullet{
 }
 
 class ExplodeBullet{
-    constructor(x, y, target, color, damage){
-        this.x = x;
-        this.y = y;
+    constructor(source, target, color, damage){
+        this.x = source.x;
+        this.y = source.y;
         this.size = 8;
         this.id = getRandomId();
 
@@ -68,11 +70,13 @@ class ExplodeBullet{
 
             if(target.died || distance_(this.x, this.y, this.destX, this.destY) < this.speed){
                 pushDamageEffect(target.x, target.y, this.damage);
+                source.addDmgCount(this.damage);
 
                 // destroy
                 if(target.getDamage(this.damage)){
                     target.willDestroy();
                     gold.add(target.gold);
+                    source.getExp(target.exp);
                     delete enemyMap[target.id];
                 }
                 this.willDestroy();
@@ -97,9 +101,9 @@ class ExplodeBullet{
 }
 
 class Laser{
-    constructor(x, y, target, color, damage){
-        this.x = x;
-        this.y = y;
+    constructor(source, target, color, damage){
+        this.x = source.x;
+        this.y = source.y;
         this.size = 8;
         this.id = getRandomId();
 
@@ -124,10 +128,12 @@ class Laser{
 
             if(positiveBound(distByEnemy - this.width/2) < enemy.size){
                 pushDamageEffect(enemy.x, enemy.y, this.damage);
+                source.addDmgCount(this.damage);
 
                 if(enemy.getDamage(this.damage)){
                     enemy.willDestroy();
                     gold.add(enemy.gold);
+                    source.getExp(target.exp);
                     delete enemyMap[enemyId];
                 }
             }

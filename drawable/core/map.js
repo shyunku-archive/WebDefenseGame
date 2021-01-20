@@ -99,9 +99,31 @@ class TileMap{
             for(let j=0; j<this.mapSize; j++){
                 if(!this.tileMap[i][j].disabled && this.tileMap[i][j].isHovered){
                     this.tileMap[i][j].installTower(tower);
+                    return true;
                 }
             }
         }
+
+        return false;
+    }
+
+    getTurretInfo = () => {
+        for(let i=0; i<this.mapSize; i++){
+            for(let j=0; j<this.mapSize; j++){
+                if(this.tileMap[i][j].isHovered){
+                    let turret = this.tileMap[i][j].turret;
+                    
+                    return {
+                        isTile: true,
+                        turret: turret
+                    };
+                }
+            }
+        }
+        return {
+            isTile: false,
+            turret: null
+        };
     }
 
     tileCoord = (x, y) => {

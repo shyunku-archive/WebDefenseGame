@@ -1,7 +1,20 @@
+@font-face{
+    font-family: 'Rubik';
+    src: url('static/fonts/Rubik-Regular.ttf');
+    font-weight: normal;
+}
+
+@font-face{
+    font-family: 'RubikBold';
+    src: url('static/fonts/Rubik-Medium.ttf');
+    font-weight: normal;
+}
+
 html,body{
     width: 100%;
     height: 100%;
     background: rgb(33, 122, 255);
+    font-family: 'Rubik';
 }
 
 body{
@@ -24,6 +37,30 @@ body{
 
     min-width: 400px;
     min-height: 400px;
+}
+
+#game_status{
+    padding: 5px 10px;
+    margin-top: 3px;
+    font-size: 1.5em;
+    max-width: 750px;
+
+    display: flex;
+    flex-direction: column;
+}
+
+#wave_num{
+    width: 120px;
+}
+
+#upper{
+    display: flex;
+}
+
+#remain_percent{
+    background: rgb(109, 36, 255);
+    margin-top: 5px;
+    height: 5px;
 }
 
 #game{
@@ -54,6 +91,7 @@ body{
     display: flex;
     flex-direction: column;
     width: 100%;
+    flex: 1;
 }
 
 #info_wrapper .main .turret-item{
@@ -85,4 +123,63 @@ body{
 
 .turret-item .cost{
     font-size: 20px;
+}
+
+.detail{
+    background: rgb(0, 0, 0);
+    height: 500px;
+    width: 100%;
+    color: white;
+    display: flex;
+    flex-direction: column;
+}
+
+.detail .name{
+    width: 100%;
+    text-align: center;
+    padding: 10px 0;
+}
+
+.detail .image-box{
+    width: 100%;
+    padding: 15px 0;
+    display: flex;
+    justify-content: center;
+}
+
+.detail .object-image{
+    width: 80px;
+    height: 80px;
+    background: red;
+}
+
+.detail .object-property{
+    width: 100%;
+    display: flex;
+    padding: 0 20px;
+    box-sizing: border-box;
+    justify-content: space-between;
+    margin-bottom: 3px;
+}
+
+#info_wrapper .menu{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    background: rgb(232, 255, 243);
+}
+
+#info_wrapper .menu .menu-item{
+    padding: 5px 10px;
+}
+
+#info_wrapper .menu .menu-item.selected{
+    cursor: pointer;
+    background: black;
+    color: cyan;
+}
+
+#info_wrapper .menu .menu-item:hover{
+    cursor: pointer;
+    background: rgb(52, 201, 255);
 }

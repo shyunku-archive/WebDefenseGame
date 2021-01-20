@@ -79,3 +79,11 @@ function radToDeg(rad){
 function distanceLineWithTwoPointsAndOneDot(xa, ya, x1, y1, x2, y2){
     return Math.abs((x2 - x1) * (y1 - ya) - (x1 - xa) * (y2 - y1)) / distance_(x1, y1, x2, y2);
 }
+
+function positiveBound(val){
+    return val > 0 ? val : 0;
+}
+
+function setFont(c, size, bold=false){
+    c.font = `${parseInt(size)}px ${bold ? "RubikBold" : ""}`;
+}

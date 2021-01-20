@@ -1,13 +1,14 @@
 class Enemy{
-    constructor(){
-        this.hp = this.maxHp = 400;
+    constructor(level){
+        this.hp = this.maxHp = 200 + 100 * level;
         this.armor = 0;
         this.moveSpeed = 50;
 
         this.initialized = false;
         this.commandable = true;
 
-        this.gold = 10;
+        this.gold = 10 + 1 * level;
+        this.exp = 5 + 0.5 * level;
 
         this.x = -9999;
         this.y = -9999;

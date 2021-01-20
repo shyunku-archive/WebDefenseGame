@@ -12,6 +12,9 @@ class Tower{
         this.size = new TileMap().tileSize * 0.8;
 
         this.lastAttack = 0;
+        this.exp = new FlexibleValue(0, 0.999);
+        this.maxExp = 100;
+        this.dmgCounter = new FlexibleValue(0, 0.999);
 
         this.x = 0;
         this.y = 0;
@@ -26,6 +29,14 @@ class Tower{
     draw = (c, x, y, w, h) => {
         c.fillStyle = this.representiveColor;
         c.fillRect(x - this.size/2, y - this.size/2, this.size, this.size);
+    }
+
+    getExp(exp){
+        this.exp.add(exp);
+    }
+
+    addDmgCount(dmg){
+        this.dmgCounter.add(dmg);
     }
 }
 
@@ -74,7 +85,7 @@ class RedTower extends Tower{
             let distance = distance_(enemy.x, enemy.y, this.x, this.y);
 
             if(distance <= this.range){
-                let newBullet = new Bullet(this.x, this.y, enemy, this.representiveColor, this.attackPower);
+                let newBullet = new Bullet(this, enemy, this.representiveColor, this.attackPower);
                 bulletMap[newBullet.id] = newBullet;
                 this.lastAttack = current();
                 break;
@@ -103,7 +114,7 @@ class OrangeTower extends Tower{
             let distance = distance_(enemy.x, enemy.y, this.x, this.y);
 
             if(distance <= this.range){
-                let newBullet = new ExplodeBullet(this.x, this.y, enemy, this.representiveColor, this.attackPower);
+                let newBullet = new ExplodeBullet(this, enemy, this.representiveColor, this.attackPower);
                 bulletMap[newBullet.id] = newBullet;
                 this.lastAttack = current();
                 break;
@@ -132,7 +143,7 @@ class YellowTower extends Tower{
             let distance = distance_(enemy.x, enemy.y, this.x, this.y);
 
             if(distance <= this.range){
-                let newLaser = new Laser(this.x, this.y, enemy, this.representiveColor, this.attackPower);
+                let newLaser = new Laser(this, enemy, this.representiveColor, this.attackPower);
                 laserMap[newLaser.id] = newLaser;
                 this.lastAttack = current();
                 break;

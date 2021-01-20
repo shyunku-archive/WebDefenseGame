@@ -22,6 +22,7 @@ class DamageEffect{
         c.textAlign = "center";
         c.fillStyle = `rgba(0, 0, 0, ${rate})`;
         c.fillText(this.dmg+"", this.x, this.y - 15);
+        c.textAlign = "left";
     }
 
     willDestroy(){

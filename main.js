@@ -13,11 +13,15 @@ let laserMap = {};
 
 let damageEffectMap = {};
 
-let waveNum = 1;
+// wave
+let waveNum = 0;
 let nextWaveTime = 0;
+let nextWaveTimeGap = 1000 * 30;
 
 let holdingItem = "";
 let holdingTurret = null;
+
+let selectedObject = null;
 
 $(() => {
     canvas = new Canvas('game');
@@ -49,10 +53,19 @@ $(() => {
         turretArrangeHelper.draw(c);
     });
 
+    const objectDetail = $('#object_detail');
+
+    for(let child of objectDetail.children()){
+        $(child).hide();
+    }
+
     wave();
 
     setInterval(() => {
         $('#gold').html(`${gold.get(true)} Gold`);
+        $('#wave_num').html(`Wave ${waveNum}`);
+        $('#remain_time').html(`${parseInt((nextWaveTime - current())/1000)} sec`);
+        $('#remain_percent').css({width: `${100 * (nextWaveTime - current())/nextWaveTimeGap}%`});
     });
 
     setInterval(() => {
@@ -74,37 +87,77 @@ $(() => {
         holdingTurret = null;
     });
 
+    let detailDisplayThread = null;
+
     $('#game').mouseup(function(e){
         if(holdingTurret){
             if(holdingTurret.gold > gold.real()){
                 return;
             }
-            gold.add(-holdingTurret.gold);
-            map.installOnHovered(holdingTurret);
+
+            if(map.installOnHovered(holdingTurret)){
+                gold.add(-holdingTurret.gold);
+            }
         }else{
-            console.log("turret not found");
+            if(holdingItem.length > 0){
+                console.log("turret not found");
+            }else{
+                let selectedTurretInfo = map.getTurretInfo();
+                if(selectedTurretInfo.turret){
+                    selectedObject = selectedTurretInfo.turret;
+
+                    if(detailDisplayThread !== null){
+                        clearInterval(detailDisplayThread);
+                    }
+                    
+                    detailDisplayThread = setInterval(() => {
+                        $('#object_detail .name').html(`${selectedObject.representiveColor} Tower`);
+                        $('#object_detail .object-image').css({background: `${selectedObject.representiveColor}`});
+                        $('#tower_level').html(selectedObject.level);
+                        $('#att_power').html(selectedObject.attackPower);
+                        $('#att_speed').html(selectedObject.attackSpeed);
+                        $('#att_range').html(selectedObject.range);
+
+                        $('#exp_state').html(`${selectedObject.exp.get(true)}/${selectedObject.maxExp}`);
+                        $('#damage_amount').html(selectedObject.dmgCounter.get(true));
+                    });
+
+                    for(let child of objectDetail.children()){
+                        $(child).show();
+                    }
+                }else{
+                    selectedObject = null;
+                    for(let child of objectDetail.children()){
+                        $(child).hide();
+                    }
+
+                    if(detailDisplayThread !== null){
+                        clearInterval(detailDisplayThread);
+                    }
+                }
+            }
         }
     });
 });
 
 function wave(){
-    let nextWaveTimeGap = 1000 * 25;
+    waveNum++;
     nextWaveTime = new Date().getTime() + nextWaveTimeGap;
 
-    makeEnemyProcess(15);
+    makeEnemyProcess(12, waveNum);
     setTimeout(wave, nextWaveTimeGap);
 }
 
-function makeEnemyProcess(iterate){
+function makeEnemyProcess(iterate, level){
     if(iterate === 0) return;
 
-    createEnemy();
+    createEnemy(level);
 
-    setTimeout(() => {makeEnemyProcess(iterate - 1);}, 600);
+    setTimeout(() => {makeEnemyProcess(iterate - 1, level);}, 600);
 }
 
-function createEnemy(){
-    let enemy = new Enemy();
+function createEnemy(level){
+    let enemy = new Enemy(level);
     let startTile = map.tileMap[0][0];
 
     enemy.init(startTile.x, startTile.y, (x, y, speed, commandable) => {
@@ -121,10 +174,6 @@ function createEnemy(){
 
 function deleteEnemy(id){
     delete enemyMap[id];
-}
-
-function positiveBound(val){
-    return val > 0 ? val : 0;
 }
 
 function pushDamageEffect(x, y, damage){

@@ -23,9 +23,22 @@
     <body>
         <div id="content_wrapper">
             <div id="canvas_wrapper">
+                <div id="game_status">
+                    <div id="upper">
+                        <div id="wave_num">Wave -</div>
+                        <div id="remain_time">54 sec</div>
+                    </div>
+                    <div id="lower">
+                        <div id="remain_percent"></div>
+                    </div>
+                </div>
                 <canvas id="game"></canvas>
             </div>
             <div id="info_wrapper">
+                <div class="menu">
+                    <div class="menu-item selected">Shop</div>
+                    <div class="menu-item">Damage</div>
+                </div>
                 <div class="top">
                     <div id="gold">0 Gold</div>
                 </div>
@@ -46,44 +59,48 @@
                         <div class="cost">45 Gold</div>
                     </div>
                 </div>
+                <div id="object_detail" class="detail">
+                    <div class="name">Red Tower</div>
+                    <div class="image-box">
+                        <div class="object-image"></div>
+                    </div>
+                    <div class="object-property">
+                        <div class="header">Level</div>
+                        <div id="tower_level" class="body">1</div>
+                    </div>
+                    <div class="object-property">
+                        <div class="header">Exp</div>
+                        <div id="exp_state" class="body">0/100</div>
+                    </div>
+                    <div class="object-property">
+                        <div class="header">Attack Power</div>
+                        <div id="att_power" class="body">0</div>
+                    </div>
+                    <div class="object-property">
+                        <div class="header">Attack Speed</div>
+                        <div id="att_speed" class="body">0</div>
+                    </div>
+                    <div class="object-property">
+                        <div class="header">Range</div>
+                        <div id="att_range" class="body">00</div>
+                    </div>
+                    <div class="object-property">
+                        <div class="header">Damage Amount</div>
+                        <div id="damage_amount" class="body">0</div>
+                    </div>
+                    <div class="upgrade-menu">
+                        <div class="uitem">
+                            <div>업그레이드</div>
+                        </div>
+                        <div class="uitem">
+                            <div>진화</div>
+                        </div>
+                        <div class="uitem">
+                            <div>되팔기</div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <script type="text/javascript">
-            // <![CDATA[  <-- For SVG support
-            if ('WebSocket' in window) {
-                (function () {
-                    function refreshCSS() {
-                        var sheets = [].slice.call(document.getElementsByTagName("link"));
-                        var head = document.getElementsByTagName("head")[0];
-                        for (var i = 0; i < sheets.length; ++i) {
-                            var elem = sheets[i];
-                            var parent = elem.parentElement || head;
-                            parent.removeChild(elem);
-                            var rel = elem.rel;
-                            if (elem.href && typeof rel != "string" || rel.length == 0 || rel.toLowerCase() == "stylesheet") {
-                                var url = elem.href.replace(/(&|\?)_cacheOverride=\d+/, '');
-                                elem.href = url + (url.indexOf('?') >= 0 ? '&' : '?') + '_cacheOverride=' + (new Date().valueOf());
-                            }
-                            parent.appendChild(elem);
-                        }
-                    }
-                    var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
-                    var address = protocol + window.location.host + window.location.pathname + '/ws';
-                    var socket = new WebSocket(address);
-                    socket.onmessage = function (msg) {
-                        if (msg.data == 'reload') window.location.reload();
-                        else if (msg.data == 'refreshcss') refreshCSS();
-                    };
-                    if (sessionStorage && !sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer')) {
-                        console.log('Live reload enabled.');
-                        sessionStorage.setItem('IsThisFirstTime_Log_From_LiveServer', true);
-                    }
-                })();
-            }
-            else {
-                console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
-            }
-            // ]]>
-        </script>
     </body>
 </html>
