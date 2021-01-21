@@ -183,3 +183,37 @@ body{
     cursor: pointer;
     background: rgb(52, 201, 255);
 }
+
+.detail .upgrade-menu{
+    margin-top: auto;
+    display: flex;
+    justify-content: space-between;
+}
+
+.upgrade-menu .uitem{
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+    background: rgb(44, 44, 44);
+    border-right: 1px solid rgb(0, 0, 0);
+    transition: 0.15s linear;
+}
+
+.upgrade-menu .uitem:hover{
+    background: cyan;
+    color: black;
+    cursor: pointer;
+}
+
+.upgrade-menu .uitem.dangerous:hover{
+    background: rgb(255, 0, 0);
+    color: black;
+    cursor: pointer;
+}
+
+.upgrade-menu .uitem .uitem-body{
+    margin-top: 3px;
+}

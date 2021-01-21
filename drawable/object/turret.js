@@ -9,15 +9,28 @@ class Tower{
         this.attackSpeedGrowth = 0.01;
 
         this.level = 1;
-        this.size = new TileMap().tileSize * 0.8;
+        this.size = new TileMap().tileSize * 0.7;
 
         this.lastAttack = 0;
         this.exp = new FlexibleValue(0, 0.999);
         this.maxExp = 100;
         this.dmgCounter = new FlexibleValue(0, 0.999);
 
+        this.id = getRandomId();
+
         this.x = 0;
         this.y = 0;
+
+        setInterval(() => {
+            while(this.exp.real() > this.maxExp){
+                this.level++;
+                this.exp.add(-this.maxExp);
+
+                this.maxExp = parseInt(100 * Math.pow(1.3, this.level));
+                this.attackPower += this.attackPowerGrowth;
+                this.attackSpeed += this.attackSpeedGrowth;
+            }
+        }, 10);
     }
 
     setPos(x, y){
@@ -29,6 +42,17 @@ class Tower{
     draw = (c, x, y, w, h) => {
         c.fillStyle = this.representiveColor;
         c.fillRect(x - this.size/2, y - this.size/2, this.size, this.size);
+
+        let rectY = this.size * 0.1;
+        c.fillStyle = 'black';
+        c.fillRect(x - this.size/2, y + this.size/2 - rectY, this.size, rectY);
+        c.fillStyle = '#4F4';
+        c.fillRect(x - this.size/2, y + this.size/2 - rectY, this.size * (this.exp.get() / this.maxExp), rectY);
+
+        c.fillStyle = this.representiveColor === 'yellow' ? 'black' : 'white';
+        c.textAlign = 'center';
+        c.fillText(this.level, x, y + rectY);
+        c.textAlign = 'left';
     }
 
     getExp(exp){
@@ -69,9 +93,12 @@ class RedTower extends Tower{
     constructor(){
         super();
         this.representiveColor = 'red';
-        this.attackPower = 50;
-        this.attackSpeed = 1;
+        this.attackPower = 150;
+        this.attackSpeed = 3;
         this.range = 280;
+
+        this.attackPowerGrowth = 4;
+        this.attackSpeedGrowth = 0.03;
 
         this.gold = 25;
     }
@@ -127,8 +154,8 @@ class YellowTower extends Tower{
     constructor(){
         super();
         this.representiveColor = 'yellow';
-        this.attackPower = 22;
-        this.attackSpeed = 2;
+        this.attackPower = 122;
+        this.attackSpeed = 1;
         this.range = 250;
 
         this.gold = 45;

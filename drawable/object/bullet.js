@@ -17,7 +17,12 @@ class Bullet{
             this.destX = target.x;
             this.destY = target.y;
 
-            if(target.died || distance_(this.x, this.y, this.destX, this.destY) < this.speed){
+            if(target.died){
+                this.willDestroy();
+                return;
+            }
+
+            if(distance_(this.x, this.y, this.destX, this.destY) < this.speed){
                 pushDamageEffect(target.x, target.y, this.damage);
                 source.addDmgCount(this.damage);
 
@@ -26,9 +31,11 @@ class Bullet{
                     target.willDestroy();
                     gold.add(target.gold);
                     source.getExp(target.exp);
+                    console.log(source.id);
                     delete enemyMap[target.id];
                 }
                 this.willDestroy();
+                return;
             }
             this.angle = Math.atan2(this.destY - this.y, this.destX - this.x);
             this.x += Math.cos(this.angle) * this.speed;
@@ -68,7 +75,12 @@ class ExplodeBullet{
             this.destX = target.x;
             this.destY = target.y;
 
-            if(target.died || distance_(this.x, this.y, this.destX, this.destY) < this.speed){
+            if(target.died){
+                this.willDestroy();
+                return;
+            }
+
+            if(distance_(this.x, this.y, this.destX, this.destY) < this.speed){
                 pushDamageEffect(target.x, target.y, this.damage);
                 source.addDmgCount(this.damage);
 

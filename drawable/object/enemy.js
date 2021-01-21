@@ -8,7 +8,7 @@ class Enemy{
         this.commandable = true;
 
         this.gold = 10 + 1 * level;
-        this.exp = 5 + 0.5 * level;
+        this.exp = 50 + 0.5 * level;
 
         this.x = -9999;
         this.y = -9999;
