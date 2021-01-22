@@ -10,6 +10,13 @@
     font-weight: normal;
 }
 
+@font-face{
+    font-family: 'RubikEB';
+    src: url('static/fonts/Rubik-Black.ttf');
+    font-weight: normal;
+}
+
+
 html,body{
     width: 100%;
     height: 100%;

@@ -31,67 +31,10 @@ class Bullet{
                     target.willDestroy();
                     gold.add(target.gold);
                     source.getExp(target.exp);
-                    console.log(source.id);
                     delete enemyMap[target.id];
                 }
                 this.willDestroy();
                 return;
-            }
-            this.angle = Math.atan2(this.destY - this.y, this.destX - this.x);
-            this.x += Math.cos(this.angle) * this.speed;
-            this.y += Math.sin(this.angle) * this.speed;
-        });
-    }
-
-    draw(c){
-        c.fillStyle = this.color;
-        c.beginPath();
-        c.arc(this.x - this.size/2, this.y - this.size/2 , this.size, 0, 2 * Math.PI);
-        c.fill();
-    }
-
-    willDestroy(){
-        clearInterval(this.moveThread);
-        delete bulletMap[this.id];
-    }
-}
-
-class ExplodeBullet{
-    constructor(source, target, color, damage){
-        this.x = source.x;
-        this.y = source.y;
-        this.size = 8;
-        this.id = getRandomId();
-
-        this.destX = target.x;
-        this.destY = target.y;
-
-        this.speed = 2;
-        this.damage = damage;
-
-        this.color = color;
-
-        this.moveThread = setInterval(() => {
-            this.destX = target.x;
-            this.destY = target.y;
-
-            if(target.died){
-                this.willDestroy();
-                return;
-            }
-
-            if(distance_(this.x, this.y, this.destX, this.destY) < this.speed){
-                pushDamageEffect(target.x, target.y, this.damage);
-                source.addDmgCount(this.damage);
-
-                // destroy
-                if(target.getDamage(this.damage)){
-                    target.willDestroy();
-                    gold.add(target.gold);
-                    source.getExp(target.exp);
-                    delete enemyMap[target.id];
-                }
-                this.willDestroy();
             }
             this.angle = Math.atan2(this.destY - this.y, this.destX - this.x);
             this.x += Math.cos(this.angle) * this.speed;

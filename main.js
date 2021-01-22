@@ -17,6 +17,7 @@ let damageEffectMap = {};
 let waveNum = 0;
 let nextWaveTime = 0;
 let nextWaveTimeGap = 1000 * 30;
+let bossPeriodWave = 5;
 
 let holdingItem = "";
 let holdingTurret = null;
@@ -27,7 +28,7 @@ $(() => {
     canvas = new Canvas('game');
     map = new TileMap();
 
-    canvas.render(c => {
+    canvas.render((c, ref) => {
         c.font = "15px Verdana";
         map.draw(c);
 
@@ -47,7 +48,7 @@ $(() => {
         }
 
         for(let effectId in damageEffectMap){
-            damageEffectMap[effectId].draw(c);
+            damageEffectMap[effectId].draw(c, ref);
         }
 
         turretArrangeHelper.draw(c);
@@ -115,7 +116,7 @@ $(() => {
                         $('#object_detail .object-image').css({background: `${selectedObject.representiveColor}`});
                         $('#tower_level').html(selectedObject.level);
                         $('#att_power').html(selectedObject.attackPower);
-                        $('#att_speed').html(selectedObject.attackSpeed);
+                        $('#att_speed').html(selectedObject.attackSpeed.toFixed(2));
                         $('#att_range').html(selectedObject.range);
 
                         $('#exp_state').html(`${selectedObject.exp.get(true)}/${selectedObject.maxExp}`);
@@ -151,13 +152,17 @@ function wave(){
 function makeEnemyProcess(iterate, level){
     if(iterate === 0) return;
 
-    createEnemy(level);
+    if(waveNum % bossPeriodWave === 0){
+        createEnemyObject(new Boss(parseInt(level/bossPeriodWave)));
+        iterate = 1;
+    }else{
+        createEnemyObject(new Enemy(level));
+    }
 
     setTimeout(() => {makeEnemyProcess(iterate - 1, level);}, 600);
 }
 
-function createEnemy(level){
-    let enemy = new Enemy(level);
+function createEnemyObject(enemy){
     let startTile = map.tileMap[0][0];
 
     enemy.init(startTile.x, startTile.y, (x, y, speed, commandable) => {

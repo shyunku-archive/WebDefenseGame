@@ -10,7 +10,7 @@ class DamageEffect{
         this.startTime = current();
     }
 
-    draw(c){
+    draw(c, ref){
         let elapsed = current() - this.startTime;
         let rate = 1 - (elapsed / this.liveTime);
 
@@ -19,9 +19,18 @@ class DamageEffect{
             return;
         }
 
+        let gradient = c.createLinearGradient(this.x - 20, this.y - 35, this.x - 20, this.y);
+        
+        gradient.addColorStop("0", `rgba(80, 250, 255, ${rate})`);
+        gradient.addColorStop("1.0", `rgba(20, 20, 20, ${rate})`);
+
+        c.fillStyle = gradient;
+        c.strokeStyle = `rgba(0, 0, 0, ${rate})`;
         c.textAlign = "center";
-        c.fillStyle = `rgba(0, 0, 0, ${rate})`;
-        c.fillText(this.dmg+"", this.x, this.y - 15);
+        // c.f = `rgba(0, 0, 0, ${rate})`;
+        setEBFont(c, 25);
+        c.fillText(parseInt(this.dmg)+"", this.x, this.y - 15);
+        c.strokeText(parseInt(this.dmg)+"", this.x, this.y - 15);
         c.textAlign = "left";
     }
 

@@ -37,7 +37,7 @@ class Canvas{
     render = (func) => {
         setInterval(() => {
             this.clear();
-            func(this.ctx);
+            func(this.ctx, this);
 
             let curTime = new Date().getTime();
             renderPeriod = curTime - this.lastRenderTime;

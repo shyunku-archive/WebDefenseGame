@@ -1,6 +1,7 @@
 class Enemy{
     constructor(level){
-        this.hp = this.maxHp = 200 + 100 * level;
+        this.maxHp = 200 + 100 * level;
+        this.hp = new FlexibleValue(this.maxHp);
         this.armor = 0;
         this.moveSpeed = 50;
 
@@ -46,7 +47,12 @@ class Enemy{
         c.fillRect(this.x - 20, this.y - 25, 40, 6);
 
         c.fillStyle = "red";
-        c.fillRect(this.x - 20, this.y - 25, 40 * (this.hp/this.maxHp), 6);
+        c.fillRect(this.x - 20, this.y - 25, 40 * (this.hp.get()/this.maxHp), 6);
+
+        c.fillStyle = "white";
+        c.textAlign = 'center';
+        setFont(c, 10, false);
+        c.fillText(this.hp.get(true), this.x, this.y + this.size * 0.2);
     }
 
     willDestroy(){
@@ -54,8 +60,17 @@ class Enemy{
     }
 
     getDamage(dmg){
-        this.hp -= dmg;
-        if(this.hp <= 0) return true;
+        this.hp.add(-dmg);
+        if(this.hp.real() <= 0) return true;
         return false;
+    }
+}
+
+class Boss extends Enemy{
+    constructor(level){
+        super(level);
+
+        this.maxHp = 1000 + 800 * level + 200 * Math.pow(1.2, level);
+        this.hp.set(this.maxHp);
     }
 }

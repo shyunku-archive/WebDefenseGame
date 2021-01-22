@@ -8,6 +8,8 @@ class Tower{
         this.attackPowerGrowth = 1;
         this.attackSpeedGrowth = 0.01;
 
+        this.attackPowerBuff = 0;
+
         this.level = 1;
         this.size = new TileMap().tileSize * 0.7;
 
@@ -62,6 +64,10 @@ class Tower{
     addDmgCount(dmg){
         this.dmgCounter.add(dmg);
     }
+
+    getAttackPowerBuffFactor(){
+        return 1 + this.attackPowerBuff;
+    }
 }
 
 class TurretArrangeHelper{
@@ -93,9 +99,9 @@ class RedTower extends Tower{
     constructor(){
         super();
         this.representiveColor = 'red';
-        this.attackPower = 150;
-        this.attackSpeed = 3;
-        this.range = 280;
+        this.attackPower = 50;
+        this.attackSpeed = 1;
+        this.range = 200;
 
         this.attackPowerGrowth = 4;
         this.attackSpeedGrowth = 0.03;
@@ -126,27 +132,56 @@ class OrangeTower extends Tower{
         super();
         this.representiveColor = 'orange';
         this.attackPower = 35;
-        this.attackSpeed = 0.9;
-        this.range = 220;
+        this.attackSpeed = 1.0;
+        this.range = 720;
+
+        this.attackPowerGrowth = 3;
+        this.attackSpeedGrowth = 0.03;
 
         this.gold = 40;
+
+        this.lastAttackTarget = "";
+        this.savedAttackSpeed = this.attackSpeed;
+    }
+
+    getCurrentMinimumAttackSpeed(){
+        return this.attackSpeed;
     }
 
     attack(){
         let elapsedAfterAttack = current() - this.lastAttack;
         if(elapsedAfterAttack < (1000/this.attackSpeed)) return;
+        if(this.attackSpeed > 1000){
+            this.attackPowerBuff = this.attackSpeed / 1000;
+        }else{
+            this.attackPowerBuff = 0;
+        }
 
         for(let enemyId in enemyMap){
             let enemy = enemyMap[enemyId];
             let distance = distance_(enemy.x, enemy.y, this.x, this.y);
 
             if(distance <= this.range){
-                let newBullet = new ExplodeBullet(this, enemy, this.representiveColor, this.attackPower);
+                let newBullet = new Bullet(
+                    this, enemy, this.representiveColor, this.attackPower * this.getAttackPowerBuffFactor()
+                );
                 bulletMap[newBullet.id] = newBullet;
+
                 this.lastAttack = current();
-                break;
+
+                if(this.lastAttackTarget !== enemy.id){
+                    this.attackSpeed = this.savedAttackSpeed;
+                    this.lastAttackTarget = enemy.id;
+                }else{
+                    this.attackSpeed += 0.3;
+                    if(this.attackSpeed > 15) this.attackSpeed = 15;
+                }
+                return;
             }
         }
+
+        this.attackSpeed = this.savedAttackSpeed;
+        this.lastAttackTarget = "";
     }
 }
 
@@ -154,7 +189,7 @@ class YellowTower extends Tower{
     constructor(){
         super();
         this.representiveColor = 'yellow';
-        this.attackPower = 122;
+        this.attackPower = 22;
         this.attackSpeed = 1;
         this.range = 250;
 

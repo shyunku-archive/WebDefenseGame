@@ -85,5 +85,9 @@ function positiveBound(val){
 }
 
 function setFont(c, size, bold=false){
-    c.font = `${parseInt(size)}px ${bold ? "RubikBold" : ""}`;
+    c.font = `${parseInt(size)}px ${bold ? "RubikBold" : "Rubik"}`;
+}
+
+function setEBFont(c, size){
+    c.font = `${parseInt(size)}px RubikEB`;
 }
