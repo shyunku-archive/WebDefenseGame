@@ -15,6 +15,7 @@ let damageEffectMap = {};
 
 // wave
 let waveNum = 0;
+let firstWaveWaitTime = 15000;
 let nextWaveTime = 0;
 let nextWaveTimeGap = 1000 * 30;
 let bossPeriodWave = 5;
@@ -60,7 +61,8 @@ $(() => {
         $(child).hide();
     }
 
-    wave();
+    nextWaveTime = Date.now() + firstWaveWaitTime;
+    setTimeout(wave, firstWaveWaitTime);
 
     setInterval(() => {
         $('#gold').html(`${gold.get(true)} Gold`);
@@ -145,7 +147,7 @@ function wave(){
     waveNum++;
     nextWaveTime = new Date().getTime() + nextWaveTimeGap;
 
-    makeEnemyProcess(12, waveNum);
+    makeEnemyProcess(15, waveNum);
     setTimeout(wave, nextWaveTimeGap);
 }
 

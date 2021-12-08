@@ -106,7 +106,7 @@ class RedTower extends Tower{
         this.attackPowerGrowth = 4;
         this.attackSpeedGrowth = 0.03;
 
-        this.gold = 25;
+        this.gold = 30;
     }
 
     attack(){
@@ -131,14 +131,14 @@ class OrangeTower extends Tower{
     constructor(){
         super();
         this.representiveColor = 'orange';
-        this.attackPower = 35;
+        this.attackPower = 18;
         this.attackSpeed = 1.0;
-        this.range = 720;
+        this.range = 350;
 
         this.attackPowerGrowth = 3;
-        this.attackSpeedGrowth = 0.03;
+        this.attackSpeedGrowth = 0.02;
 
-        this.gold = 40;
+        this.gold = 45;
 
         this.lastAttackTarget = "";
         this.savedAttackSpeed = this.attackSpeed;
@@ -193,7 +193,7 @@ class YellowTower extends Tower{
         this.attackSpeed = 1;
         this.range = 250;
 
-        this.gold = 45;
+        this.gold = 50;
     }
 
     attack(){
