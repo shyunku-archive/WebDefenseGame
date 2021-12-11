@@ -1,15 +1,15 @@
 class Enemy{
     constructor(level){
-        this.maxHp = 200 + 150 * level;
+        this.maxHp = 180 + 120 * level + 8 * level * level;
         this.hp = new FlexibleValue(this.maxHp);
         this.armor = 0;
-        this.moveSpeed = 50;
+        this.moveSpeed = 60;
 
         this.initialized = false;
         this.commandable = true;
 
         this.gold = 5 + 0.2 * level;
-        this.exp = 35 + 0.5 * level;
+        this.exp = 40 + 5 * level;
 
         this.x = -9999;
         this.y = -9999;
@@ -71,6 +71,6 @@ class Boss extends Enemy{
         super(level);
 
         this.maxHp = 2500 + 1500 * level + 200 * Math.pow(1.2, level);
-        this.hp.set(this.maxHp);
+        this.hp.setReal(this.maxHp);
     }
 }

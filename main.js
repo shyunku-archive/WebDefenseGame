@@ -15,10 +15,11 @@ let damageEffectMap = {};
 
 // wave
 let waveNum = 0;
-let firstWaveWaitTime = 15000;
+let firstWaveWaitTime = 20000;
 let nextWaveTime = 0;
 let nextWaveTimeGap = 1000 * 30;
 let bossPeriodWave = 5;
+let enemyNum = 15;
 
 let holdingItem = "";
 let holdingTurret = null;
@@ -85,6 +86,21 @@ $(() => {
         }
     });
 
+    $('.control.pause').mousedown(function(e) {
+        let $this = $(this);
+        paused = !$this.hasClass('active');
+
+        if(paused) {
+            $(this).addClass('active');
+        } else {
+            $(this).removeClass('active');
+        }
+    });
+
+    $('.control.next').mousedown(function(e) {
+        wave();
+    });
+
     $(window).mouseup(function(e){
         holdingItem = "";
         holdingTurret = null;
@@ -147,7 +163,7 @@ function wave(){
     waveNum++;
     nextWaveTime = new Date().getTime() + nextWaveTimeGap;
 
-    makeEnemyProcess(15, waveNum);
+    makeEnemyProcess(enemyNum, waveNum);
     setTimeout(wave, nextWaveTimeGap);
 }
 
@@ -168,11 +184,13 @@ function createEnemyObject(enemy){
     let startTile = map.tileMap[0][0];
 
     enemy.init(startTile.x, startTile.y, (x, y, speed, commandable) => {
-        let tileCoordinate = map.tileCoord(x, y);
-        let moveDirection = map.moveDirection(x, y, tileCoordinate.i, tileCoordinate.j);
+        if(!paused) {
+            let tileCoordinate = map.tileCoord(x, y);
+            let moveDirection = map.moveDirection(x, y, tileCoordinate.i, tileCoordinate.j);
 
-        x += moveDirection.x * speed * renderPeriod / 1000;
-        y += moveDirection.y * speed * renderPeriod / 1000;
+            x += moveDirection.x * speed * renderPeriod / 1000;
+            y += moveDirection.y * speed * renderPeriod / 1000;
+        }
 
         return {x: x, y: y};
     });

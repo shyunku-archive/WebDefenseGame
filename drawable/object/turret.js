@@ -5,8 +5,8 @@ class Tower{
         this.attackSpeed = 1;
         this.range = 300;
 
-        this.attackPowerGrowth = 1;
-        this.attackSpeedGrowth = 0.01;
+        this.attackPowerGrowth = 3;
+        this.attackSpeedGrowth = 0.15;
 
         this.attackPowerBuff = 0;
 
@@ -15,7 +15,7 @@ class Tower{
 
         this.lastAttack = 0;
         this.exp = new FlexibleValue(0, 0.999);
-        this.maxExp = 100;
+        this.maxExp = 50;
         this.dmgCounter = new FlexibleValue(0, 0.999);
 
         this.id = getRandomId();
@@ -28,7 +28,7 @@ class Tower{
                 this.level++;
                 this.exp.add(-this.maxExp);
 
-                this.maxExp = parseInt(100 * Math.pow(1.3, this.level));
+                this.maxExp = parseInt(100 * Math.pow(1.2, this.level));
                 this.attackPower += this.attackPowerGrowth;
                 this.attackSpeed += this.attackSpeedGrowth;
             }
@@ -174,7 +174,7 @@ class OrangeTower extends Tower{
                     this.lastAttackTarget = enemy.id;
                 }else{
                     this.attackSpeed += 0.3;
-                    if(this.attackSpeed > 15) this.attackSpeed = 15;
+                    if(this.attackSpeed > 20) this.attackSpeed = 20;
                 }
                 return;
             }

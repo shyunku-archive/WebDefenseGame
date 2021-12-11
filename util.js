@@ -42,6 +42,10 @@ class FlexibleValue{
         });
     }
 
+    setReal = (value) => {
+        this.value = value;
+    }
+
     add = (value) => {
         this.set(this.destValue + value);
     }
